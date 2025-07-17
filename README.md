@@ -1,6 +1,6 @@
 # opengl-beginner
 
-A modular and reusable OpenGL rendering component written in C++. Designed to be easily plugged into other projects with minimal setup. Handles context creation, rendering loop, shaders, and more to come.
+A beginner-friendly way to start drawing graphics with OpenGL. Handles context creation, rendering loop, shaders, and more to come.
 
 ## Features
 
