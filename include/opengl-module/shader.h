@@ -4,15 +4,13 @@
 #include <glad/glad.h> // include glad to get all the required OpenGL headers
 #include <string>
 
+// Wrapper for a shader program in OpenGL
 class Shader
 {
-  // the program ID
-  GLuint _id;
+  GLuint _id; // the program ID
 
-  // Track if the shader has been initialized
-  bool _init = false;
-
-  bool _initErrorPrinted = false;
+  bool _init = false;             // Track if the shader has been initialized
+  bool _initErrorPrinted = false; // Track if an error message about the init status has been printed
 
 public:
   /**

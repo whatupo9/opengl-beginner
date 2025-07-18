@@ -150,14 +150,19 @@ void Shader::use()
 {
   if (!_init)
   {
+    // If an error message hasn't been printed, print one
     if (!_initErrorPrinted)
     {
       std::cerr << "ERROR::SHADER::NOT_INITIALIZED:\n"
                 << "Attempted to use a Shader program that has not been initialized\n";
       _initErrorPrinted = true;
     }
+
+    // Return to avoid using an uninitialized shader program
     return;
   }
+
+  // Otherwise, set OpenGL to use the program
   glUseProgram(_id);
 }
 
