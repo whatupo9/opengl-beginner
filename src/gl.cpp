@@ -1,4 +1,4 @@
-#include "gl.h"
+#include <opengl-module/gl.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
 
@@ -9,21 +9,22 @@ void processInput(GLFWwindow* window);
 
 GL::~GL()
 {
+  destroyWindow();
+}
+
+void GL::destroyWindow()
+{
   if (_window)
     glfwDestroyWindow(_window);
 
   glfwTerminate();
 }
 
-GL& GL::getInstance()
+int GL::run(Callback updateCallback, Callback renderCallback, Callback initCallback, std::string windowName, int windowWidth, int windowHeight)
 {
-  static GL instance;
-  return instance;
-}
+  _init = init(windowName, windowWidth, windowHeight);
 
-int GL::run(Callback update, Callback render, Callback initCallback)
-{
-  if (!init())
+  if (!_init)
     return -1;
 
   if (initCallback)
@@ -36,22 +37,21 @@ int GL::run(Callback update, Callback render, Callback initCallback)
     // Invokes appropriate callbacks
     glfwPollEvents();
 
-    glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+    if (updateCallback)
+      updateCallback();
 
-    if (update)
-      update();
-
-    if (render)
-      render();
+    if (renderCallback)
+      renderCallback();
 
     glfwSwapBuffers(_window);
   }
 
+  destroyWindow();
+
   return 0;
 }
 
-bool GL::init()
+bool GL::init(std::string windowName, int windowWidth, int windowHeight)
 {
   if (!glfwInit())
   {
@@ -63,7 +63,7 @@ bool GL::init()
   glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-  _window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "Cube Simulator", NULL, NULL);
+  _window = glfwCreateWindow(windowWidth, windowHeight, windowName.c_str(), NULL, NULL);
   glfwMakeContextCurrent(_window);
 
   if (!_window)

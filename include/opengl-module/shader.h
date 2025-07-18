@@ -9,7 +9,20 @@ class Shader
   // the program ID
   GLuint _id;
 
+  // Track if the shader has been initialized
+  bool _init = false;
+
+  bool _initErrorPrinted = false;
+
 public:
+  /**
+   * Shader Default Constructor
+   * DOES NOT INITIALIZE
+   * This constructor is only to allow global instances
+   * After constructing a Shader, you must call Shader::init()
+   */
+  Shader() = default;
+
   /**
    * Shader Constructor
    *
@@ -17,6 +30,16 @@ public:
    * @param fragmentPath: The relative file path to the fragment shader
    */
   Shader(const char* vertexPath, const char* fragmentPath);
+
+  /**
+   * Initializes the shader
+   * Compile the vertex and fragment shaders
+   * Attaches them to a shader program and links it
+   *
+   * @param vertexPath: The relative file path to the vertex shader
+   * @param fragmentPath: The relative file path to the fragment shader
+   */
+  void init(const char* vertexPath, const char* fragmentPath);
 
   /**
    * Instructs OpenGL to use this shader for rendering
